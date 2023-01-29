@@ -29,10 +29,6 @@ const Profile = () => {
                     </>
                   }
             </Box>
-
-            
-            
-            <h1>olaaa</h1>
         </Box>
     )
 }
