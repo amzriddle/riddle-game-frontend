@@ -1,3 +1,4 @@
+import React from 'react'
 import { DrawerHeader } from "./Menu"
 
 function Ranking () {
