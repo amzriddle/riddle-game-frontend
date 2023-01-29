@@ -13,17 +13,27 @@ const getUser = () => {
   return api.get(`/user`);
 };
 
+const getMe = () => {
+  const token = JSON.parse(localStorage.getItem('token'))
+  
+  return api.get(`/user/me`, {
+    headers: {
+      'Authorization': `Bearer ${token}` 
+    }
+  });
+};
+
 const getAllUsers = () => {
   return api.get(`/user`);
 };
 
 const postLogin = (email, password) => {
-  console.log(email,password)
+  // console.log(email,password)
   return api.post(`/auth/signin`, qs.stringify({email: email, password: password}) );
 };
 
 const postRegister = (email, password) => {
-  console.log(email,password)
+  // console.log(email,password)
   return api.post(`/auth/signup`, qs.stringify({email: email, password: password}) );
 };
 
@@ -35,6 +45,7 @@ const exportedObject =  {
   getAllChallenges,
   getChallenge,
   getUser,
+  getMe,
   getAllUsers,
   postLogin,
   postRegister,
