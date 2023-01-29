@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   Link
 } from "react-router-dom";
-import { Typography } from "@mui/material";
+// import { Typography } from "@mui/material";
 import { DrawerHeader } from "./Menu";
 
 function RiddleList() {

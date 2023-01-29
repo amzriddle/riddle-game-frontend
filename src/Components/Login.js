@@ -20,14 +20,15 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
 
     api.postLogin(data.get('email'), data.get('password')).then(
       (res) => {
-        console.log(res.data)
+        localStorage.setItem('token', JSON.stringify(res.data.access_token));
+        console.log('token stored!')
       },
       (error) => {
         console.log(error);

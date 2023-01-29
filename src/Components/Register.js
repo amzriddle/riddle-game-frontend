@@ -28,7 +28,7 @@ export default function SignUp() {
 
     api.postRegister(data.get('email'), data.get('password')).then(
       (res) => {
-        console.log(res.data)
+        // console.log(res.data)
       },
       (error) => {
         console.log(error);
