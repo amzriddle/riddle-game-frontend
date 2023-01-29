@@ -8,13 +8,16 @@ import { DrawerHeader } from "./Menu";
 
 function RiddleList() {
   const [challenges, setChallenges] = useState([]);
+  let isApiSubscribed = true;
 
   useEffect(() => {
     const retrieveChallenges = () => {
       api
         .getAllChallenges()
         .then((res) => {
-          setChallenges(res.data);
+          if (isApiSubscribed) {
+            setChallenges(res.data);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -22,6 +25,9 @@ function RiddleList() {
     };
 
     retrieveChallenges();
+    return () => {
+      isApiSubscribed = false;
+    };
   }, []);
   return (
     <Box sx={{ display: 'flex' }}>
