@@ -41,6 +41,15 @@ const getLogout = () => {
   return api.get(`/logout`);
 }
 
+const postAnswer = (id, answer) => {
+  const token = JSON.parse(localStorage.getItem('token'))
+  return api.post(`/riddle/answer/${id}`, qs.stringify({answer: answer}), {
+    headers: {
+      'Authorization': `Bearer ${token}` 
+    }
+  })
+}
+
 const exportedObject =  {
   getAllChallenges,
   getChallenge,
@@ -49,7 +58,8 @@ const exportedObject =  {
   getAllUsers,
   postLogin,
   postRegister,
-  getLogout
+  getLogout,
+  postAnswer
 };
 
 export default exportedObject;

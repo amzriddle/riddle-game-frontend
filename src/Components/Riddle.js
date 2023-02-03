@@ -3,13 +3,19 @@ import React, { useEffect, useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import { DrawerHeader } from "./Menu";
+import { useLocation } from 'react-router-dom'
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
+  const location = useLocation()
+  const { id } = location.state
 
   useEffect(() => {
-    retrieveChallenge(props.match.params.id);
-  }, [props.match.params.id]);
+    retrieveChallenge(id);
+  }, []);
 
   const retrieveChallenge = (id) => {
     api
@@ -21,6 +27,32 @@ function Riddle(props) {
         console.log(error);
       });
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget)
+    console.log({
+      answer: data.get('answer'),
+    });
+
+    api.postAnswer(id, data.get('answer')).then(
+      (res) => {
+        // wrong answer
+        if (res.status === 200){
+          console.log(res.data)
+        }
+        
+        // correct answer
+        if (res.status === 201){
+          console.log(res.data)
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  
   return (
     <div className="App">
       <DrawerHeader />
@@ -32,17 +64,26 @@ function Riddle(props) {
             <li key={"clue_2"}>{challenge.clue_2}</li>
             <li key={challenge.answer}>{challenge.answer}</li>
           </ul>
-          
-          <TextField
-            id="outlined-answer-input"
-            label="answer"
-            type="answer"
-            autoComplete="current-answer"
-            variant="outlined"
-          />
-          <SendRoundedIcon/>
-        </div>
-      }
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              name="answer"
+              id="answer"
+              label="answer"
+              type="answer"
+              autoComplete="current-answer"
+              variant="outlined"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              <SendRoundedIcon/>
+            </Button>
+            
+          </Box>
+      </div>}
     </div>
   );
 }

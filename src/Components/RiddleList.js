@@ -36,7 +36,10 @@ function RiddleList() {
         <DrawerHeader />
         <h1>Riddle List</h1>
         {challenges.map((challenge, index) => (
-          <li key={index}><Link to={`/riddle/${challenge.id}`} >{challenge.id}</Link></li>
+          <li key={index}><Link
+            to={`/riddle/${challenge.id}`}
+            state={{ id: challenge.id }}
+          >{challenge.id}</Link></li>
         ))}
       </Box>
     </Box>
