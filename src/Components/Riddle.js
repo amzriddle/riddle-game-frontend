@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 
 function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
+  const [answered, setAnswered] = useState(false);
+  
   const location = useLocation()
   const { id } = location.state
 
@@ -44,7 +46,7 @@ function Riddle(props) {
         
         // correct answer
         if (res.status === 201){
-          console.log(res.data)
+          setAnswered(true)
         }
       },
       (error) => {
@@ -56,7 +58,7 @@ function Riddle(props) {
   return (
     <div className="App">
       <DrawerHeader />
-      {<div>
+      {answered ? <>CORRECT!</>:<div>
           <ul>
             <li key={"clue_1"}>
               <img alt={challenge.clue_2}  src={challenge.clue_1}></img>
@@ -78,8 +80,10 @@ function Riddle(props) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              color="primary"
+              endIcon={<SendRoundedIcon/>}
             >
-              <SendRoundedIcon/>
+              Send
             </Button>
             
           </Box>
