@@ -1,9 +1,7 @@
-import api from "../api";
 import React, { useEffect, useState } from "react";
-import {
-  Link
-} from "react-router-dom";
-import { CssBaseline, Box } from "@mui/material"
+import api from "../api";
+import { Link } from "react-router-dom";
+import { CssBaseline, Box } from "@mui/material";
 import { DrawerHeader } from "./Menu";
 
 function RiddleList() {
@@ -30,16 +28,17 @@ function RiddleList() {
     };
   }, []);
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <h1>Riddle List</h1>
         {challenges.map((challenge, index) => (
-          <li key={index}><Link
-            to={`/riddle/${challenge.id}`}
-            state={{ id: challenge.id }}
-          >{challenge.id}</Link></li>
+          <li key={index}>
+            <Link to={`/riddle/${challenge.id}`} state={{ id: challenge.id }}>
+              {challenge.id}
+            </Link>
+          </li>
         ))}
       </Box>
     </Box>
