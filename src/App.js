@@ -1,17 +1,17 @@
-import React from 'react'
-import {
-  BrowserRouter,
-} from "react-router-dom";
-
+import React from "react";
 import MiniDrawer from "./Components/Menu";
+
+import { CssBaseline, ThemeProvider } from "@material-ui/core";
+import { createTheme } from "@mui/material";
+
+const theme = createTheme();
 
 function App() {
   return (
-    <>
-      <BrowserRouter>
-         <MiniDrawer />
-      </BrowserRouter>
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <MiniDrawer />
+    </ThemeProvider>
   );
 }
 
