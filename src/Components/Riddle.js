@@ -7,7 +7,8 @@ import { useLocation } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Container } from "@mui/material";
+import { Container, Paper, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
@@ -68,7 +69,17 @@ function Riddle(props) {
       >
         <DrawerHeader />
         {answered ? (
-          <>CORRECT!</>
+          <Paper
+            elevation={3}
+            sx={{
+              alignItems: "center",
+            }}
+          >
+            <CheckCircleIcon color="success" sx={{ fontSize: "160px" }} />
+            <Typography component="h1" variant="h5">
+              CORRECT!
+            </Typography>
+          </Paper>
         ) : (
           <>
             <ul>
