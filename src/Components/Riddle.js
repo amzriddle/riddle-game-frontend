@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import TextField from "@mui/material/TextField";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { DrawerHeader } from "./Menu";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
   const [answered, setAnswered] = useState(false);
+  const [wrong, setWrong] = useState(false);
+  const [id, setId] = useState(1)
 
   const location = useLocation();
-  const { id } = location.state;
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const id = location.pathname.split("/").slice(-1)
+    setId(id);
     retrieveChallenge(id);
   }, []);
 
@@ -43,6 +48,12 @@ function Riddle(props) {
         // wrong answer
         if (res.status === 200) {
           console.log(res.data);
+          setWrong(true);
+
+          setTimeout(() => {
+            setWrong(false)
+          }, 3000);
+          
         }
 
         // correct answer
@@ -56,6 +67,22 @@ function Riddle(props) {
     );
   };
 
+  const handleNext = () => {
+    api.getNextAndLastRiddle().then(
+      (res) => {
+        let next = res.data.nextRiddle
+
+        setId(next)
+        setAnswered(false)
+        retrieveChallenge(next);
+        navigate(`/riddle/${next}`)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -68,15 +95,21 @@ function Riddle(props) {
       >
         <DrawerHeader />
         {answered ? (
-          <>CORRECT!</>
+          <>
+            <CheckCircleIcon color="success" sx={{ fontSize: "160px" }} />
+            <Typography component="h1" variant="h5">
+              CORRECT!
+            </Typography>
+            <Button onClick={handleNext}>Next</Button>
+          </>
         ) : (
           <>
+            <Typography  variant="h4">Level {challenge.id}</Typography>
             <ul>
               <li key={"clue_1"}>
                 <img alt={challenge.clue_1} src={challenge.clue_1}></img>
               </li>
               <li key={"clue_2"}>{challenge.clue_2}</li>
-              <li key={challenge.answer}>{challenge.answer}</li>
             </ul>
             <Box
               component="form"
@@ -100,9 +133,9 @@ function Riddle(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                endIcon={<SendRoundedIcon />}
+                color={wrong? "error": "primary"}
               >
-                Send
+                {wrong? "WRONG!!!" : "ANSWER"}
               </Button>
             </Box>
           </>
