@@ -13,6 +13,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
   const [answered, setAnswered] = useState(false);
+  const [wrong, setWrong] = useState(false);
   const [id, setId] = useState(1)
 
   const location = useLocation();
@@ -48,6 +49,12 @@ function Riddle(props) {
         // wrong answer
         if (res.status === 200) {
           console.log(res.data);
+          setWrong(true);
+
+          setTimeout(() => {
+            setWrong(false)
+          }, 3000);
+          
         }
 
         // correct answer
@@ -127,9 +134,9 @@ function Riddle(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                endIcon={<SendRoundedIcon />}
+                color={wrong? "error": "primary"}
               >
-                ANSWER
+                {wrong? "WRONG!!!" : "ANSWER"}
               </Button>
             </Box>
           </>
