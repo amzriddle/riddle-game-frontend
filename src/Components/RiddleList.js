@@ -45,25 +45,13 @@ function RiddleList() {
   }, []);
 
   const goToCurrentLevel = (event) => {
-    let nextChallenge = 0;
-    api.getAnswered().then(
+    api.getNextAndLastRiddle().then(
       (res) => {
-        var lastAnswered = 0
-        
-        if(res.data.length === 0){
-          lastAnswered = 0
-        }else{
-          lastAnswered = res.data[res.data.length - 1].riddleId;
-        }
-        
-        nextChallenge = challenges[challenges.findIndex(item => item.id === lastAnswered) + 1]
-
-        if(nextChallenge){
-          navigate(`/riddle/${nextChallenge.id}`)
+        if(res.data.nextRiddle){
+          navigate(`/riddle/${res.data.nextRiddle}`)
         } else {
           console.log("Wait for more challenges!")
         }
-        
       },
       (error) => {
         console.log(error);
