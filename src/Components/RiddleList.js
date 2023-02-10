@@ -3,9 +3,11 @@ import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
 import { CssBaseline, Box, Button } from "@mui/material";
 import { DrawerHeader } from "./Menu";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function RiddleList() {
   const [challenges, setChallenges] = useState([]);
+  const [answeredChallenges, setAnsweredChallenges] = useState([]);
   let isApiSubscribed = true;
   
   const navigate = useNavigate();
@@ -24,7 +26,19 @@ function RiddleList() {
         });
     };
 
+    const retrieveAnswered = () => {
+        api.getAnswered().then(
+        (res) => {
+          setAnsweredChallenges(res.data)
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+
     retrieveChallenges();
+    retrieveAnswered();
     return () => {
       isApiSubscribed = false;
     };
@@ -63,15 +77,17 @@ function RiddleList() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <h1>Riddle List</h1>
+          <Button sx={{alignContent: 'center'}} onClick={goToCurrentLevel}>GO TO MY LEVEL</Button>
         {challenges.map((challenge, index) => (
-          <li key={index}>
-            <Link to={`/riddle/${challenge.id}`} state={{ id: challenge.id }}>
-              {challenge.id}
-            </Link>
-          </li>
+            answeredChallenges.find(item => item.riddleId === challenge.id) ? 
+                <li key={index}>Level {challenge.id} <CheckCircleIcon color="success" size="small"  /></li>
+      
+              :
+              
+                <li key={index}><Link to={`/riddle/${challenge.id}`} state={{ id: challenge.id }}>
+                Level {challenge.id}
+                </Link></li>
         ))}
-
-        <Button onClick={goToCurrentLevel}>GO TO MY LEVEL</Button>
       </Box>
     </Box>
   );
