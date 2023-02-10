@@ -62,11 +62,19 @@ function Riddle(props) {
   };
 
   const handleNext = () => {
-    const next = Number(id)+1
-    setId(next)
-    setAnswered(false)
-    retrieveChallenge(next);
-    navigate(`/riddle/${next}`)
+    api.getNextAndLastRiddle().then(
+      (res) => {
+        let next = res.data.nextRiddle
+
+        setId(next)
+        setAnswered(false)
+        retrieveChallenge(next);
+        navigate(`/riddle/${next}`)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CssBaseline, Box, Button } from "@mui/material";
 import { DrawerHeader } from "./Menu";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -84,9 +84,9 @@ function RiddleList() {
       
               :
               
-                <li key={index}><Link to={`/riddle/${challenge.id}`} state={{ id: challenge.id }}>
-                Level {challenge.id}
-                </Link></li>
+                <li key={index}>
+                  Level {challenge.id}
+                </li>
         ))}
       </Box>
     </Box>

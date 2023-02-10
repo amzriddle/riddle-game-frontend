@@ -60,6 +60,16 @@ const getAnswered = () => {
   });
 };
 
+const getNextAndLastRiddle = () => {
+  const token = JSON.parse(localStorage.getItem('token'))
+  
+  return api.get(`/riddle/next`, {
+    headers: {
+      'Authorization': `Bearer ${token}` 
+    }
+  });
+}
+
 const exportedObject =  {
   getAllChallenges,
   getChallenge,
@@ -70,7 +80,8 @@ const exportedObject =  {
   postRegister,
   getLogout,
   postAnswer,
-  getAnswered
+  getAnswered,
+  getNextAndLastRiddle
 };
 
 export default exportedObject;
