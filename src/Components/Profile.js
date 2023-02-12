@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
 import { DrawerHeader } from "./Menu";
 import { Box, CssBaseline } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import AuthContext from '../contexts/auth';
 
 const Profile = () => {
   const [data, setData] = useState(null);
   let isApiSubscribed = true;
 
+  const context = useContext(AuthContext);
+  console.log(context);
   useEffect(() => {
     api.getMe().then((res) => {
       if (isApiSubscribed) {
