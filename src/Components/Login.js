@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -18,8 +18,14 @@ import AuthContext from "../contexts/auth";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { loginUpdate } = useContext(AuthContext)
+  const { signed, loginUpdate } = useContext(AuthContext)
 
+  useEffect(() => {
+    if (signed) {
+      navigate("/profile");
+    }
+  })
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

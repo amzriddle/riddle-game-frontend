@@ -7,9 +7,11 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log('auth context')
     api.getMe().then((res) => {
-        setUser(res.data);
+      setUser(res.data);
+    })
+    .catch((error) => {
+      setUser(null);
     });
   }, []);
 
@@ -18,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   const logoutUpdate = () => {
+    localStorage.removeItem("token");
     setUser(false)
   }
 
