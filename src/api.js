@@ -38,7 +38,7 @@ const postRegister = (email, password) => {
 };
 
 const getLogout = () => {
-  return api.get(`/logout`);
+  return api.get(`/auth/logout`);
 }
 
 const postAnswer = (id, answer) => {

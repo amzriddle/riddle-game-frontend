@@ -1,6 +1,8 @@
 import React from "react";
-
 import { Link } from "react-router-dom";
+
+import api from "../api";
+import AuthContext from "../contexts/auth";
 
 import { Drawer, Hidden, List, ListItem } from "@material-ui/core";
 import { AppBar, MenuItem } from "@mui/material";
@@ -10,6 +12,25 @@ const styles = {
 };
 
 function MyMenu({ menuOpen }) {
+  const { signed, logoutUpdate } = useContext(AuthContext)
+
+  const handleLogout = () => {
+    api.getLogout().then(
+      (res) => {
+        console.log(res.data);
+        logoutUpdate();
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+      }
+    );
+  };
+  
   return (
     <div>
       <Hidden smUp implementation="css">
@@ -30,9 +51,15 @@ function MyMenu({ menuOpen }) {
             <ListItem>
               <Link to="/ranking">Ranking</Link>
             </ListItem>
-            <ListItem>
-              <Link to="/login">Login</Link>
-            </ListItem>
+            {signed? 
+              <ListItem onClick={handleLogout}>
+                Logout
+              </ListItem>
+              :
+              <ListItem>
+                <Link to="/login">Login</Link>
+              </ListItem>
+            }
           </List>
         </Drawer>
       </Hidden>

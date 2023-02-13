@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { CssBaseline, Box, Button } from "@mui/material";
 import { DrawerHeader } from "./Menu";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AuthContext from "../contexts/auth";
 
 function RiddleList() {
   const [challenges, setChallenges] = useState([]);
@@ -11,7 +12,8 @@ function RiddleList() {
   let isApiSubscribed = true;
   
   const navigate = useNavigate();
-
+  const { signed } = useContext(AuthContext)
+  
   useEffect(() => {
     const retrieveChallenges = () => {
       api
@@ -38,7 +40,11 @@ function RiddleList() {
     }
 
     retrieveChallenges();
-    retrieveAnswered();
+
+    if(signed){
+      retrieveAnswered();
+    }
+    
     return () => {
       isApiSubscribed = false;
     };
@@ -65,7 +71,11 @@ function RiddleList() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <h1>Riddle List</h1>
-          <Button sx={{alignContent: 'center'}} onClick={goToCurrentLevel}>GO TO MY LEVEL</Button>
+          { signed && 
+            <Button sx={{alignContent: 'center'}} onClick={goToCurrentLevel}>
+              GO TO MY LEVEL
+            </Button>
+          }
         {challenges.map((challenge, index) => (
             answeredChallenges.find(item => item.riddleId === challenge.id) ? 
                 <li key={index}>Level {challenge.id} <CheckCircleIcon color="success" size="small"  /></li>

@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense, useContext } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -18,9 +18,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Person, PlayArrow, ShowChart } from "@mui/icons-material";
 
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import AuthContext from "../contexts/auth";
 
 
 const Home = lazy(() => import("./Home"));
@@ -101,6 +103,13 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const { signed, logoutUpdate } = useContext(AuthContext)
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logoutUpdate();
+    navigate("/login")
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -218,8 +227,10 @@ export default function MiniDrawer() {
           </ListItem>
         </List>
         <Divider />
-        <List>
-          <ListItem key={"profile"} disablePadding sx={{ display: "block" }}>
+        
+          {signed ?
+            <List>
+            <ListItem key={"profile"} disablePadding sx={{ display: "block" }}>
             <Link to="/profile">
               <ListItemButton
                 sx={{
@@ -244,7 +255,35 @@ export default function MiniDrawer() {
               </ListItemButton>
             </Link>
           </ListItem>
-          <ListItem key={"login"} disablePadding sx={{ display: "block" }}>
+          <ListItem key={"logout"} disablePadding sx={{ display: "block" }}
+            onClick={handleLogout}  
+          >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"logout"}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+          </ListItem>
+          </List>
+          :
+          <List>
+            <ListItem key={"login"} disablePadding sx={{ display: "block" }}>
             <Link to="/login">
               <ListItemButton
                 sx={{
@@ -269,7 +308,9 @@ export default function MiniDrawer() {
               </ListItemButton>
             </Link>
           </ListItem>
-        </List>
+            </List>
+          }
+          
       </Drawer>
       <Routes>
         <Route

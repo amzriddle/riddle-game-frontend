@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -14,10 +14,18 @@ import Container from "@mui/material/Container";
 import { Link, useNavigate } from "react-router-dom";
 
 import api from "../api";
+import AuthContext from "../contexts/auth";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { signed, loginUpdate } = useContext(AuthContext)
 
+  useEffect(() => {
+    if (signed) {
+      navigate("/profile");
+    }
+  })
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -25,6 +33,7 @@ export default function SignIn() {
     api.postLogin(data.get("email"), data.get("password")).then(
       (res) => {
         localStorage.setItem("token", JSON.stringify(res.data.access_token));
+        loginUpdate()
         navigate("/profile");
       },
       (error) => {
