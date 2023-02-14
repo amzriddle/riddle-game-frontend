@@ -1,5 +1,5 @@
 import React from "react";
-import MiniDrawer from "./Components/Menu";
+import MiniDrawer from "./components/Menu";
 import { AuthProvider } from './contexts/auth';
 
 import { CssBaseline, ThemeProvider } from "@material-ui/core";

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
-import { DrawerHeader } from "../Components/Menu";
 import { Box, CssBaseline } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import AuthContext from "../contexts/auth";
@@ -31,8 +30,7 @@ const Profile = () => {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
         <h1>Profile</h1>
         {data && (
           <>

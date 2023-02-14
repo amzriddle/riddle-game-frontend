@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import TextField from "@mui/material/TextField";
-import { DrawerHeader } from "../Components/Menu";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
@@ -86,13 +85,12 @@ function Riddle(props) {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 12,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <DrawerHeader />
         {answered ? (
           <>
             <CheckCircleIcon color="success" sx={{ fontSize: "160px" }} />
