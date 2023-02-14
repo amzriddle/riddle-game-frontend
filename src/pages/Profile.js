@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
-import { DrawerHeader } from "./Menu";
+import { DrawerHeader } from "../Components/Menu";
 import { Box, CssBaseline } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import AuthContext from '../contexts/auth';
+import AuthContext from "../contexts/auth";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [data, setData] = useState(null);
   let isApiSubscribed = true;
   const navigate = useNavigate();
-  
+
   const { signed } = useContext(AuthContext);
-  
+
   useEffect(() => {
     if (!signed) {
       navigate("/login");
     }
-    
+
     api.getMe().then((res) => {
       if (isApiSubscribed) {
         setData(res.data);

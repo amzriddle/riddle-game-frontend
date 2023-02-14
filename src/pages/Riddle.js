@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import TextField from "@mui/material/TextField";
-import { DrawerHeader } from "./Menu";
+import { DrawerHeader } from "../Components/Menu";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
@@ -13,14 +13,14 @@ function Riddle(props) {
   const [challenge, setChallenge] = useState([]);
   const [answered, setAnswered] = useState(false);
   const [wrong, setWrong] = useState(false);
-  const [id, setId] = useState(1)
+  const [id, setId] = useState(1);
 
   const location = useLocation();
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const id = location.pathname.split("/").slice(-1)
+    const id = location.pathname.split("/").slice(-1);
     setId(id);
     retrieveChallenge(id);
   }, []);
@@ -51,9 +51,8 @@ function Riddle(props) {
           setWrong(true);
 
           setTimeout(() => {
-            setWrong(false)
+            setWrong(false);
           }, 3000);
-          
         }
 
         // correct answer
@@ -70,18 +69,18 @@ function Riddle(props) {
   const handleNext = () => {
     api.getNextAndLastRiddle().then(
       (res) => {
-        let next = res.data.nextRiddle
+        let next = res.data.nextRiddle;
 
-        setId(next)
-        setAnswered(false)
+        setId(next);
+        setAnswered(false);
         retrieveChallenge(next);
-        navigate(`/riddle/${next}`)
+        navigate(`/riddle/${next}`);
       },
       (error) => {
         console.log(error);
       }
     );
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -104,7 +103,7 @@ function Riddle(props) {
           </>
         ) : (
           <>
-            <Typography  variant="h4">Level {challenge.id}</Typography>
+            <Typography variant="h4">Level {challenge.id}</Typography>
             <ul>
               <li key={"clue_1"}>
                 <img alt={challenge.clue_1} src={challenge.clue_1}></img>
@@ -133,9 +132,9 @@ function Riddle(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                color={wrong? "error": "primary"}
+                color={wrong ? "error" : "primary"}
               >
-                {wrong? "WRONG!!!" : "ANSWER"}
+                {wrong ? "WRONG!!!" : "ANSWER"}
               </Button>
             </Box>
           </>

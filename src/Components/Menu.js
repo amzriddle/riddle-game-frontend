@@ -24,14 +24,13 @@ import { Person, PlayArrow, ShowChart } from "@mui/icons-material";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/auth";
 
-
-const Home = lazy(() => import("./Home"));
-const Riddle = lazy(() => import("./Riddle"));
-const Profile = lazy(() => import("./Profile"));
-const Ranking = lazy(() => import("./Ranking"));
-const RiddleList = lazy(() => import("./RiddleList"));
-const Login = lazy(() => import("./Login"));
-const Register = lazy(() => import("./Register"));
+const Home = lazy(() => import("../pages/Home"));
+const Riddle = lazy(() => import("../pages/Riddle"));
+const Profile = lazy(() => import("../pages/Profile"));
+const Ranking = lazy(() => import("../pages/Ranking"));
+const RiddleList = lazy(() => import("../pages/RiddleList"));
+const Login = lazy(() => import("../pages/Login"));
+const Register = lazy(() => import("../pages/Register"));
 
 const drawerWidth = 240;
 
@@ -103,12 +102,12 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const { signed, logoutUpdate } = useContext(AuthContext)
+  const { signed, logoutUpdate } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logoutUpdate();
-    navigate("/login")
+    navigate("/login");
   };
 
   const handleDrawerOpen = () => {
@@ -227,37 +226,40 @@ export default function MiniDrawer() {
           </ListItem>
         </List>
         <Divider />
-        
-          {signed ?
-            <List>
+
+        {signed ? (
+          <List>
             <ListItem key={"profile"} disablePadding sx={{ display: "block" }}>
-            <Link to="/profile">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+              <Link to="/profile">
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  <Person />
-                </ListItemIcon>
-                <ListItemText
-                  primary={"profile"}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          <ListItem key={"logout"} disablePadding sx={{ display: "block" }}
-            onClick={handleLogout}  
-          >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Person />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={"profile"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+            <ListItem
+              key={"logout"}
+              disablePadding
+              sx={{ display: "block" }}
+              onClick={handleLogout}
+            >
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -279,38 +281,37 @@ export default function MiniDrawer() {
                   sx={{ opacity: open ? 1 : 0 }}
                 />
               </ListItemButton>
-          </ListItem>
+            </ListItem>
           </List>
-          :
+        ) : (
           <List>
             <ListItem key={"login"} disablePadding sx={{ display: "block" }}>
-            <Link to="/login">
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+              <Link to="/login">
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  <LoginIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary={"login"}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-            </List>
-          }
-          
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <LoginIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={"login"}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          </List>
+        )}
       </Drawer>
       <Routes>
         <Route

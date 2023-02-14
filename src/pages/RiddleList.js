@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { CssBaseline, Box, Button } from "@mui/material";
-import { DrawerHeader } from "./Menu";
+import { DrawerHeader } from "../Components/Menu";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AuthContext from "../contexts/auth";
 
