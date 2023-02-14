@@ -1,11 +1,10 @@
 import api from "./http-common";
-import qs from 'qs';
 
 const getAllChallenges = () => {
   return api.get(`/riddle`);
 };
 
-const getChallenge = id => {
+const getChallenge = (id) => {
   return api.get(`/riddle/${id}`);
 };
 
@@ -14,12 +13,12 @@ const getUser = () => {
 };
 
 const getMe = () => {
-  const token = JSON.parse(localStorage.getItem('token'))
-  
+  const token = JSON.parse(localStorage.getItem("token"));
+
   return api.get(`/user/me`, {
     headers: {
-      'Authorization': `Bearer ${token}` 
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
@@ -29,48 +28,52 @@ const getAllUsers = () => {
 
 const postLogin = (email, password) => {
   // console.log(email,password)
-  return api.post(`/auth/signin`, qs.stringify({email: email, password: password}) );
+  return api.post(`/auth/signin`, { email: email, password: password });
 };
 
 const postRegister = (email, password) => {
   // console.log(email,password)
-  return api.post(`/auth/signup`, qs.stringify({email: email, password: password}) );
+  return api.post(`/auth/signup`, { email: email, password: password });
 };
 
 const getLogout = () => {
   return api.get(`/auth/logout`);
-}
+};
 
 const postAnswer = (id, answer) => {
-  const token = JSON.parse(localStorage.getItem('token'))
-  return api.post(`/riddle/answer/${id}`, qs.stringify({answer: answer}), {
-    headers: {
-      'Authorization': `Bearer ${token}` 
+  const token = JSON.parse(localStorage.getItem("token"));
+  return api.post(
+    `/riddle/answer/${id}`,
+    { answer: answer },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }
-  })
-}
+  );
+};
 
 const getAnswered = () => {
-  const token = JSON.parse(localStorage.getItem('token'))
-  
+  const token = JSON.parse(localStorage.getItem("token"));
+
   return api.get(`/riddle/answered`, {
     headers: {
-      'Authorization': `Bearer ${token}` 
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
 };
 
 const getNextAndLastRiddle = () => {
-  const token = JSON.parse(localStorage.getItem('token'))
-  
+  const token = JSON.parse(localStorage.getItem("token"));
+
   return api.get(`/riddle/next`, {
     headers: {
-      'Authorization': `Bearer ${token}` 
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
-}
+};
 
-const exportedObject =  {
+const exportedObject = {
   getAllChallenges,
   getChallenge,
   getUser,
@@ -81,7 +84,7 @@ const exportedObject =  {
   getLogout,
   postAnswer,
   getAnswered,
-  getNextAndLastRiddle
+  getNextAndLastRiddle,
 };
 
 export default exportedObject;
