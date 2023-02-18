@@ -1,4 +1,9 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import api from "../api";
+import Alert from "../components/Alert";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -9,12 +14,12 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link, useNavigate } from "react-router-dom";
-
-import api from "../api";
+import Snackbar from '@mui/material/Snackbar';
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState([]);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -30,9 +35,23 @@ export default function SignUp() {
         navigate("/profile");
       },
       (error: any) => {
-        console.log(error);
+        if(typeof error.response.data.message === "string"){
+          setMessage([error.response.data.message])
+        } else {
+          setMessage(error.response.data.message)
+        }
+        
+        setOpen(true)
       }
     );
+  };
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
   };
 
   return (
@@ -110,6 +129,15 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+              <ul>
+              {message.map((msg, index) => 
+                <li key={`login-error-message-${index}`}>{msg}</li>
+              )}
+              </ul>
+            </Alert>
+          </Snackbar>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to="/login">Already have an account? Sign in</Link>

@@ -1,7 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import api from "../api";
 import AuthContext from "../contexts/auth";
+import Alert from "../components/Alert";
 
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,22 +15,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import CloseIcon from '@mui/icons-material/Close';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export default function SignIn() {
   const navigate = useNavigate();
   const { signed, loginUpdate } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState([]);
+  const [message, setMessage] = React.useState<any>([]);
 
   useEffect(() => {
     if (signed) {
@@ -118,7 +111,7 @@ export default function SignIn() {
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
             <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
               <ul>
-              {message.map((msg, index) => 
+              {message.map((msg: string, index) => 
                 <li key={`login-error-message-${index}`}>{msg}</li>
               )}
               </ul>

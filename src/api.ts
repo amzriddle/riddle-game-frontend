@@ -27,7 +27,6 @@ const getAllUsers = () => {
 };
 
 const postLogin = (email: any, password: any) => {
-  console.log(email, password);
   return api.post(`/auth/signin`, { email: email, password: password });
 };
 
