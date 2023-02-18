@@ -91,6 +91,14 @@ function Riddle() {
     );
   };
 
+  const clueType = (url: string) => {
+    if (/(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(url)) {
+      return <img alt={challenge.clue_1} src={challenge.clue_1}></img>
+    } else {
+      return <Typography>{challenge.clue_1}</Typography>
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <Box
@@ -114,7 +122,7 @@ function Riddle() {
             <Typography variant="h4">Level {challenge.id}</Typography>
             <ul>
               <li key={"clue_1"}>
-                <img alt={challenge.clue_1} src={challenge.clue_1}></img>
+                {clueType(challenge.clue_1)}
               </li>
               <li key={"clue_2"}>{challenge.clue_2}</li>
             </ul>
