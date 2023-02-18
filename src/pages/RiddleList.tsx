@@ -8,7 +8,6 @@ import AuthContext from "../contexts/auth";
 function RiddleList() {
   const [challenges, setChallenges] = useState([]);
   const [answeredChallenges, setAnsweredChallenges] = useState([]);
-  let isApiSubscribed = true;
 
   const navigate = useNavigate();
   const { signed } = useContext(AuthContext);
@@ -17,22 +16,20 @@ function RiddleList() {
     const retrieveChallenges = () => {
       api
         .getAllChallenges()
-        .then((res) => {
-          if (isApiSubscribed) {
-            setChallenges(res.data);
-          }
+        .then((res: any) => {
+          setChallenges(res.data);
         })
-        .catch((error) => {
+        .catch((error: any) => {
           console.log(error);
         });
     };
 
     const retrieveAnswered = () => {
       api.getAnswered().then(
-        (res) => {
+        (res: any) => {
           setAnsweredChallenges(res.data);
         },
-        (error) => {
+        (error: any) => {
           console.log(error);
         }
       );
@@ -43,22 +40,18 @@ function RiddleList() {
     if (signed) {
       retrieveAnswered();
     }
-
-    return () => {
-      isApiSubscribed = false;
-    };
   }, []);
 
-  const goToCurrentLevel = (event) => {
+  const goToCurrentLevel = (event: any) => {
     api.getNextAndLastRiddle().then(
-      (res) => {
+      (res: any) => {
         if (res.data.nextRiddle) {
           navigate(`/riddle/${res.data.nextRiddle}`);
         } else {
           console.log("Wait for more challenges!");
         }
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );
@@ -74,11 +67,12 @@ function RiddleList() {
             GO TO MY LEVEL
           </Button>
         )}
-        {challenges.map((challenge, index) =>
-          answeredChallenges.find((item) => item.riddleId === challenge.id) ? (
+        {challenges.map((challenge: { id: number }, index) =>
+          answeredChallenges.find(
+            (item: { riddleId: number }) => item.riddleId === challenge.id
+          ) ? (
             <li key={index}>
-              Level {challenge.id}{" "}
-              <CheckCircleIcon color="success" size="small" />
+              Level {challenge.id} <CheckCircleIcon color="success" />
             </li>
           ) : (
             <li key={index}>Level {challenge.id}</li>

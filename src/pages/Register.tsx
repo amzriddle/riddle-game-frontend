@@ -16,7 +16,7 @@ import api from "../api";
 export default function SignUp() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // console.log({
@@ -25,11 +25,11 @@ export default function SignUp() {
     // });
 
     api.postRegister(data.get("email"), data.get("password")).then(
-      (res) => {
+      (res: any) => {
         localStorage.setItem("token", JSON.stringify(res.data.access_token));
         navigate("/profile");
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );

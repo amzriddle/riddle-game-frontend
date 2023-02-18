@@ -18,25 +18,25 @@ import AuthContext from "../contexts/auth";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { signed, loginUpdate } = useContext(AuthContext)
+  const { signed, loginUpdate } = useContext(AuthContext);
 
   useEffect(() => {
     if (signed) {
       navigate("/profile");
     }
-  })
-  
-  const handleSubmit = (event) => {
+  });
+
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
     api.postLogin(data.get("email"), data.get("password")).then(
-      (res) => {
+      (res: any) => {
         localStorage.setItem("token", JSON.stringify(res.data.access_token));
-        loginUpdate()
+        loginUpdate();
         navigate("/profile");
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );

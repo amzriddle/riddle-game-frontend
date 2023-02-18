@@ -4,7 +4,7 @@ const getAllChallenges = () => {
   return api.get(`/riddle`);
 };
 
-const getChallenge = (id) => {
+const getChallenge = (id: number) => {
   return api.get(`/riddle/${id}`);
 };
 
@@ -13,7 +13,7 @@ const getUser = () => {
 };
 
 const getMe = () => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  var token = JSON.parse(localStorage.getItem("token") || "{}");
 
   return api.get(`/user/me`, {
     headers: {
@@ -26,12 +26,12 @@ const getAllUsers = () => {
   return api.get(`/user`);
 };
 
-const postLogin = (email, password) => {
-  // console.log(email,password)
+const postLogin = (email: any, password: any) => {
+  console.log(email, password);
   return api.post(`/auth/signin`, { email: email, password: password });
 };
 
-const postRegister = (email, password) => {
+const postRegister = (email: any, password: any) => {
   // console.log(email,password)
   return api.post(`/auth/signup`, { email: email, password: password });
 };
@@ -40,8 +40,8 @@ const getLogout = () => {
   return api.get(`/auth/logout`);
 };
 
-const postAnswer = (id, answer) => {
-  const token = JSON.parse(localStorage.getItem("token"));
+const postAnswer = (id: any, answer: any) => {
+  const token = JSON.parse(localStorage.getItem("token") || "{}");
   return api.post(
     `/riddle/answer/${id}`,
     { answer: answer },
@@ -54,7 +54,7 @@ const postAnswer = (id, answer) => {
 };
 
 const getAnswered = () => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token") || "{}");
 
   return api.get(`/riddle/answered`, {
     headers: {
@@ -64,7 +64,7 @@ const getAnswered = () => {
 };
 
 const getNextAndLastRiddle = () => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token") || "{}");
 
   return api.get(`/riddle/next`, {
     headers: {

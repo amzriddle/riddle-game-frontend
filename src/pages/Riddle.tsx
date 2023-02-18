@@ -8,34 +8,44 @@ import Button from "@mui/material/Button";
 import { Container, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-function Riddle(props) {
-  const [challenge, setChallenge] = useState([]);
+interface Challenge {
+  id: number;
+  clue_1: string;
+  clue_2: string;
+}
+
+function Riddle() {
+  const [challenge, setChallenge] = useState<Challenge>({
+    id: 0,
+    clue_1: "",
+    clue_2: "",
+  });
   const [answered, setAnswered] = useState(false);
   const [wrong, setWrong] = useState(false);
-  const [id, setId] = useState(1);
+  const [id, setId] = useState<number>(1);
 
   const location = useLocation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const id = location.pathname.split("/").slice(-1);
+    const id: number = parseInt(location.pathname.split("/").slice(-1)[0]);
     setId(id);
     retrieveChallenge(id);
   }, []);
 
-  const retrieveChallenge = (id) => {
+  const retrieveChallenge = (id: any) => {
     api
       .getChallenge(id)
-      .then((res) => {
+      .then((res: any) => {
         setChallenge(res.data);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
       });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -43,7 +53,7 @@ function Riddle(props) {
     });
 
     api.postAnswer(id, data.get("answer")).then(
-      (res) => {
+      (res: any) => {
         // wrong answer
         if (res.status === 200) {
           console.log(res.data);
@@ -59,7 +69,7 @@ function Riddle(props) {
           setAnswered(true);
         }
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );
@@ -67,7 +77,7 @@ function Riddle(props) {
 
   const handleNext = () => {
     api.getNextAndLastRiddle().then(
-      (res) => {
+      (res: any) => {
         let next = res.data.nextRiddle;
 
         setId(next);
@@ -75,7 +85,7 @@ function Riddle(props) {
         retrieveChallenge(next);
         navigate(`/riddle/${next}`);
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );
