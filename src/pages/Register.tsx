@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import api from "../api";
+import AuthContext from "../contexts/auth";
 import Alert from "../components/Alert";
 
 import Avatar from "@mui/material/Avatar";
@@ -18,20 +19,24 @@ import Snackbar from '@mui/material/Snackbar';
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const { signed, loginUpdate } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState([]);
+
+  useEffect(() => {
+    if (signed) {
+      navigate("/profile");
+    }
+  });
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get('email'),
-    //   password: data.get('password'),
-    // });
 
     api.postRegister(data.get("email"), data.get("password")).then(
       (res: any) => {
         localStorage.setItem("token", JSON.stringify(res.data.access_token));
+        loginUpdate();
         navigate("/profile");
       },
       (error: any) => {
