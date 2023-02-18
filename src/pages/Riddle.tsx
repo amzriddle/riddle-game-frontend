@@ -48,20 +48,16 @@ function Riddle() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      answer: data.get("answer"),
-    });
 
     api.postAnswer(id, data.get("answer")).then(
       (res: any) => {
         // wrong answer
         if (res.status === 200) {
-          console.log(res.data);
           setWrong(true);
 
           setTimeout(() => {
             setWrong(false);
-          }, 3000);
+          }, 1500);
         }
 
         // correct answer

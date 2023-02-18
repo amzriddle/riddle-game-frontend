@@ -21,7 +21,7 @@ export default function SignUp() {
   const navigate = useNavigate();
   const { signed, loginUpdate } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState([]);
+  const [message, setMessage] = React.useState<any>([]);
 
   useEffect(() => {
     if (signed) {
