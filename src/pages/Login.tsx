@@ -15,13 +15,13 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Snackbar from '@mui/material/Snackbar';
+import Snackbar from "@mui/material/Snackbar";
 
 export default function SignIn() {
   const navigate = useNavigate();
   const { signed, loginUpdate } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState<any>([]);
+  const [message, setMessage] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (signed) {
@@ -40,19 +40,26 @@ export default function SignIn() {
         navigate("/profile");
       },
       (error: any) => {
-        if(typeof error.response.data.message === "string"){
-          setMessage([error.response.data.message])
-        } else {
-          setMessage(error.response.data.message)
+        if(error.response){
+          if (typeof error.response.data.message === "string") {
+            setMessage([error.response.data.message]);
+          } else {
+            setMessage(error.response.data.message);
+          }
+        }else{
+          setMessage([error.message]);
         }
         
-        setOpen(true)
+        setOpen(true);
       }
     );
   };
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -109,11 +116,15 @@ export default function SignIn() {
             Sign In
           </Button>
           <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+            <Alert
+              onClose={handleClose}
+              severity="warning"
+              sx={{ width: "100%" }}
+            >
               <ul>
-              {message.map((msg: string, index) => 
-                <li key={`login-error-message-${index}`}>{msg}</li>
-              )}
+                {message.map((msg: string, index: any) => (
+                  <li key={`login-error-message-${index}`}>{msg}</li>
+                ))}
               </ul>
             </Alert>
           </Snackbar>
