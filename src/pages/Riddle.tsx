@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import TextField from "@mui/material/TextField";
-import { DrawerHeader } from "./Menu";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
@@ -9,51 +8,56 @@ import Button from "@mui/material/Button";
 import { Container, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-function Riddle(props) {
-  const [challenge, setChallenge] = useState([]);
+interface Challenge {
+  id: number;
+  clue_1: string;
+  clue_2: string;
+}
+
+function Riddle() {
+  const [challenge, setChallenge] = useState<Challenge>({
+    id: 0,
+    clue_1: "",
+    clue_2: "",
+  });
   const [answered, setAnswered] = useState(false);
   const [wrong, setWrong] = useState(false);
-  const [id, setId] = useState(1)
+  const [id, setId] = useState<number>(1);
 
   const location = useLocation();
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const id = location.pathname.split("/").slice(-1)
+    const id: number = parseInt(location.pathname.split("/").slice(-1)[0]);
     setId(id);
     retrieveChallenge(id);
   }, []);
 
-  const retrieveChallenge = (id) => {
+  const retrieveChallenge = (id: any) => {
     api
       .getChallenge(id)
-      .then((res) => {
+      .then((res: any) => {
         setChallenge(res.data);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
       });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      answer: data.get("answer"),
-    });
 
     api.postAnswer(id, data.get("answer")).then(
-      (res) => {
+      (res: any) => {
         // wrong answer
         if (res.status === 200) {
-          console.log(res.data);
           setWrong(true);
 
           setTimeout(() => {
-            setWrong(false)
-          }, 3000);
-          
+            setWrong(false);
+          }, 1500);
         }
 
         // correct answer
@@ -61,7 +65,7 @@ function Riddle(props) {
           setAnswered(true);
         }
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );
@@ -69,31 +73,38 @@ function Riddle(props) {
 
   const handleNext = () => {
     api.getNextAndLastRiddle().then(
-      (res) => {
-        let next = res.data.nextRiddle
+      (res: any) => {
+        let next = res.data.nextRiddle;
 
-        setId(next)
-        setAnswered(false)
+        setId(next);
+        setAnswered(false);
         retrieveChallenge(next);
-        navigate(`/riddle/${next}`)
+        navigate(`/riddle/${next}`);
       },
-      (error) => {
+      (error: any) => {
         console.log(error);
       }
     );
-  }
+  };
+
+  const clueType = (url: string) => {
+    if (/(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(url)) {
+      return <img alt={challenge.clue_1} src={challenge.clue_1}></img>;
+    } else {
+      return <Typography>{challenge.clue_1}</Typography>;
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 12,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <DrawerHeader />
         {answered ? (
           <>
             <CheckCircleIcon color="success" sx={{ fontSize: "160px" }} />
@@ -104,11 +115,9 @@ function Riddle(props) {
           </>
         ) : (
           <>
-            <Typography  variant="h4">Level {challenge.id}</Typography>
+            <Typography variant="h4">Level {challenge.id}</Typography>
             <ul>
-              <li key={"clue_1"}>
-                <img alt={challenge.clue_1} src={challenge.clue_1}></img>
-              </li>
+              <li key={"clue_1"}>{clueType(challenge.clue_1)}</li>
               <li key={"clue_2"}>{challenge.clue_2}</li>
             </ul>
             <Box
@@ -133,9 +142,9 @@ function Riddle(props) {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                color={wrong? "error": "primary"}
+                color={wrong ? "error" : "primary"}
               >
-                {wrong? "WRONG!!!" : "ANSWER"}
+                {wrong ? "WRONG!!!" : "ANSWER"}
               </Button>
             </Box>
           </>

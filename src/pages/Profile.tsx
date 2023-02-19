@@ -1,44 +1,46 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
-import { DrawerHeader } from "./Menu";
 import { Box, CssBaseline } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import AuthContext from '../contexts/auth';
+import AuthContext from "../contexts/auth";
 import { useNavigate } from "react-router-dom";
 
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 const Profile = () => {
-  const [data, setData] = useState(null);
-  let isApiSubscribed = true;
+  const [user, setUser] = useState<User>({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
   const navigate = useNavigate();
-  
+
   const { signed } = useContext(AuthContext);
-  
+
   useEffect(() => {
     if (!signed) {
       navigate("/login");
     }
-    
-    api.getMe().then((res) => {
-      if (isApiSubscribed) {
-        setData(res.data);
-      }
+
+    api.getMe().then((res: any) => {
+      setUser(res.data);
     });
-    return () => {
-      isApiSubscribed = false;
-    };
   }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+      <Box component="main" sx={{ flexGrow: 1, p: 3, marginTop: 8 }}>
         <h1>Profile</h1>
-        {data && (
+        {user && (
           <>
-            <Typography>First Name: {data.firstName}</Typography>
-            <Typography>Last Name: {data.lastName}</Typography>
-            <Typography>Email: {data.email}</Typography>
+            <Typography>First Name: {user.firstName}</Typography>
+            <Typography>Last Name: {user.lastName}</Typography>
+            <Typography>Email: {user.email}</Typography>
           </>
         )}
       </Box>
