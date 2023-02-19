@@ -40,13 +40,13 @@ export default function SignUp() {
         navigate("/profile");
       },
       (error: any) => {
-        if(error.response){
+        if (error.response) {
           if (typeof error.response.data.message === "string") {
             setMessage([error.response.data.message]);
           } else {
             setMessage(error.response.data.message);
           }
-        }else{
+        } else {
           setMessage([error.message]);
         }
 
