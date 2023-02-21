@@ -73,8 +73,8 @@ const getNextAndLastRiddle = () => {
 };
 
 const getRanking = (page: number) => {
-  return api.get(`/ranking?page=${page}`)
-}
+  return api.get(`/ranking?page=${page}`);
+};
 
 const exportedObject = {
   getAllChallenges,
@@ -88,7 +88,7 @@ const exportedObject = {
   postAnswer,
   getAnswered,
   getNextAndLastRiddle,
-  getRanking
+  getRanking,
 };
 
 export default exportedObject;

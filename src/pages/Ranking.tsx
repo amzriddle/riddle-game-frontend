@@ -18,10 +18,11 @@ interface Ranking {
 
 function Ranking() {
   const [ranking, setRanking] = useState<Ranking[]>([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     api
-      .getRanking(1)
+      .getRanking(page)
       .then((res: any) => {
         setRanking(res.data);
       })
@@ -29,6 +30,18 @@ function Ranking() {
         console.log(error);
       });
   }, []);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    api
+      .getRanking(value)
+      .then((res: any) => {
+        setRanking(res.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -63,7 +76,7 @@ function Ranking() {
               </TableBody>
             </Table>
           </TableContainer>
-          <Pagination count={10} />
+          <Pagination count={10} page={page} onChange={handleChange} />
         </div>
       </Box>
     </Box>
