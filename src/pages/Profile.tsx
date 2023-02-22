@@ -6,15 +6,13 @@ import AuthContext from "../contexts/auth";
 import { useNavigate } from "react-router-dom";
 
 interface User {
-  firstName: string;
-  lastName: string;
+  username: string;
   email: string;
 }
 
 const Profile = () => {
   const [user, setUser] = useState<User>({
-    firstName: "",
-    lastName: "",
+    username: "",
     email: "",
   });
   const navigate = useNavigate();
@@ -38,8 +36,7 @@ const Profile = () => {
         <h1>Profile</h1>
         {user && (
           <>
-            <Typography>First Name: {user.firstName}</Typography>
-            <Typography>Last Name: {user.lastName}</Typography>
+            <Typography>Username: {user.username}</Typography>
             <Typography>Email: {user.email}</Typography>
           </>
         )}

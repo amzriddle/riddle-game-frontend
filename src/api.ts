@@ -30,9 +30,9 @@ const postLogin = (email: any, password: any) => {
   return api.post(`/auth/signin`, { email: email, password: password });
 };
 
-const postRegister = (email: any, password: any) => {
+const postRegister = (username: any, email: any, password: any) => {
   // console.log(email,password)
-  return api.post(`/auth/signup`, { email: email, password: password });
+  return api.post(`/auth/signup`, { username: username, email: email, password: password });
 };
 
 const getLogout = () => {
@@ -72,6 +72,10 @@ const getNextAndLastRiddle = () => {
   });
 };
 
+const getRanking = (page: number) => {
+  return api.get(`/ranking?page=${page}`);
+};
+
 const exportedObject = {
   getAllChallenges,
   getChallenge,
@@ -84,6 +88,7 @@ const exportedObject = {
   postAnswer,
   getAnswered,
   getNextAndLastRiddle,
+  getRanking,
 };
 
 export default exportedObject;
