@@ -5,7 +5,6 @@ import {
   Pagination,
   Typography,
   Grid,
-  Container,
 } from "@mui/material";
 
 import Table from "@mui/material/Table";
@@ -20,7 +19,7 @@ import api from "../api";
 
 interface Ranking {
   rank: number;
-  email: string;
+  username: string;
   completeChallengesCount: number;
 }
 
@@ -71,20 +70,20 @@ function Ranking() {
               <TableHead>
                 <TableRow>
                   <TableCell>Rank</TableCell>
-                  <TableCell align="right">email</TableCell>
+                  <TableCell align="right">Username</TableCell>
                   <TableCell align="right">Complete</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {ranking.map((row) => (
                   <TableRow
-                    key={row.email}
+                    key={row.username}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       {row.rank}
                     </TableCell>
-                    <TableCell align="right">{row.email}</TableCell>
+                    <TableCell align="right">{row.username}</TableCell>
                     <TableCell align="right">
                       {row.completeChallengesCount}
                     </TableCell>
